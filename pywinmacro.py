@@ -1,6 +1,7 @@
 """
 Author : Byunghyun Ban
 Book : 일반인을 위한 업무 자동화
+https://brunch.co.kr/@needleworm/200
 """
 
 import win32api
