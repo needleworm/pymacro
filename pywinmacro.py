@@ -119,13 +119,8 @@ def key_press_once(key):
 def type_in(string):
     # 클립보드에 스트링을 집어넣습니다.
     os.system('echo ' + string + '| clip')
-    # Ctrl을 누릅니다.
-    key_on("control")
-    # V도 누릅니다.
-    key_on("v")
-    # 두 키를 모두 뗍니다.
-    key_off("control")
-    key_off("v")
+    # Ctrl v로 붙여넣기 합니다.
+    ctrl_v()
 
 
 # 영어, 숫자, 특수문자로 된 스트링을 바로 입력하는 함수입니다.
@@ -218,3 +213,25 @@ def get_color(location):
     x, y = location
     # win32gui모듈로 색상값을 따 오고, 16진수로 변환하여 리턴합니다.
     return hex(win32gui.GetPixel(win32gui.GetDC(win32gui.GetActiveWindow()), x, y))
+
+
+# Ctrl C (복사)
+def ctrl_c():
+    # Ctrl을 누릅니다.
+    key_on("control")
+    # c도 누릅니다.
+    key_on("c")
+    # 두 키를 모두 뗍니다.
+    key_off("control")
+    key_off("c")
+
+
+# Ctrl V (복사)
+def ctrl_v():
+    # Ctrl을 누릅니다.
+    key_on("control")
+    # v도 누릅니다.
+    key_on("v")
+    # 두 키를 모두 뗍니다.
+    key_off("control")
+    key_off("v")
