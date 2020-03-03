@@ -235,3 +235,25 @@ def ctrl_v():
     # 두 키를 모두 뗍니다.
     key_off("control")
     key_off("v")
+
+
+# Ctrl A (모두 선택)
+def ctrl_a():
+    # Ctrl을 누릅니다.
+    key_on("control")
+    # a도 누릅니다.
+    key_on("a")
+    # 두 키를 모두 뗍니다.
+    key_off("control")
+    key_off("a")
+
+
+# Ctrl F (찾기)
+def ctrl_f():
+    # Ctrl을 누릅니다.
+    key_on("control")
+    # a도 누릅니다.
+    key_on("f")
+    # 두 키를 모두 뗍니다.
+    key_off("control")
+    key_off("f")
