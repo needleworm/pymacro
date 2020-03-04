@@ -9,6 +9,7 @@ import win32api
 import win32con
 import win32gui
 import pyperclip
+import pywinauto
 
 # 라이브러리에서 사용할 키맵을 미리 세팅합니다.
 KEYMAP = {
@@ -270,3 +271,13 @@ def ctrl_f():
     # 두 키를 모두 뗍니다.
     key_off("control")
     key_off("f")
+
+
+# 이미지를 입력받아 화면에서 위치를 탐색합니다.
+# 화면에서 이미지가 발견되지 않을 경우 False를 리턴합니다.
+def find_on_screen(filename):
+    a = pywinauto.locateCenterOnScreen(filename)
+    if not a:
+        return False
+    else:
+        return (a[0], a[1])
