@@ -270,3 +270,26 @@ def ctrl_f():
     # 두 키를 모두 뗍니다.
     key_off("control")
     key_off("f")
+
+
+# Alt F4 (종료)
+def alt_f4():
+    # Alt를 누릅니다.
+    key_on("alt")
+    # F4도 누릅니다.
+    key_on("f4")
+    # 두 키를 모두 뗍니다.
+    key_off("alt")
+    key_off("f4")
+
+
+# Alt Tab (화면 전환)
+def alt_tab():
+    # Alt를 누릅니다.
+    key_on("alt")
+    # F4도 누릅니다.
+    key_on("tab")
+    # 두 키를 모두 뗍니다.
+    key_off("alt")
+    key_off("tab")
+
