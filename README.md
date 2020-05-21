@@ -101,6 +101,18 @@ string은 시스템에 입력하고 싶은 문자열(스트링)입니다. 글자
 
 >pw.key_press_once("backspace")
 
+### Ctrl C
+>pw.ctrl_c()
+
+### Ctrl V
+>pw.ctrl_v()
+
+### Ctrl A
+>pw.ctrl_a()
+
+### Ctrl F
+>pw.ctrl_f()
+
 ## 6. 화면 인식 관련
 ### 특정 좌표의 색상을 16진수로 읽어오기
 >pw.get_color(location)
