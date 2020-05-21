@@ -239,7 +239,7 @@ def ctrl_c():
     key_off("c")
 
 
-# Ctrl V (복사)
+# Ctrl V (붙여넣기)
 def ctrl_v():
     # Ctrl을 누릅니다.
     key_on("control")
