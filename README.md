@@ -115,13 +115,3 @@ string은 시스템에 입력하고 싶은 문자열(스트링)입니다. 글자
 ## 6. 화면 인식 관련
 ### 특정 좌표의 색상을 16진수로 읽어오기
 >pw.get_color(location)
-
-### 특정 좌표의 색상이 원하는 색상이 될 때까 작업을 중단하고 기다리는 함수
->pw.awake_when_color_match(location, color)
-
-location은 좌표가 입력된 튜플이고 color는 16진수 색상값입니다. location 위치에 있는 픽셀 값의 색상이 color와 동일해질때까지 작업을 멈추고 기다립니다.
-
-### 특정 좌표의 색상이 지정된 색상과 달라질때까지 작업을 중단하고 기다리는 함수
->ps.awake_when_color_change(location, color)
-
-location은 좌표가 입력된 튜플이고 color는 16진수 색상값입니다. location 위치에 있는 픽셀 값의 색상이 color와 동일해질때까지 작업을 멈추고 기다립니다.
