@@ -1,65 +1,68 @@
 #-*-coding:euc-kr
 """
 Author : Byunghyun Ban
-Book : 6°³¿ù Ä¡ ¾÷¹«¸¦ ÇÏ·ç ¸¸¿¡ ³¡³»´Â ¾÷¹« ÀÚµ¿È­
+Book : 6ê°œì›” ì¹˜ ì—…ë¬´ë¥¼ í•˜ë£¨ ë§Œì— ëë‚´ëŠ” ì—…ë¬´ ìë™í™”
 """
 
-import win32api
-import win32con
-import win32gui
+
 import pyperclip
+import pyautogui
 
-# ¶óÀÌºê·¯¸®¿¡¼­ »ç¿ëÇÒ Å°¸ÊÀ» ¹Ì¸® ¼¼ÆÃÇÕ´Ï´Ù.
+# ë¼ì´ë¸ŒëŸ¬ë¦¬ì—ì„œ ì‚¬ìš©í•  í‚¤ë§µì„ ë¯¸ë¦¬ ì„¸íŒ…í•©ë‹ˆë‹¤.
 KEYMAP = {
-    # Á¦¾î Å°
-    "esc": 0x1B,  "window": 0x5B,
-    "control": 0x11,    "alt": 0x12,  "kor_eng": 0x15,
-    "print_screen": 0x2C,    "scroll_lock": 0x91,   "pause_break": 0x13,
+    # ì œì–´ í‚¤
+    "esc": "esc",  "window": "win", 
+    "command": "command", "option": "option",
+    "control": "ctrl",    "alt": "alt",  "kor_eng": "hanguel",
+    "print_screen": "prtsc",    "scroll_lock": "scrolllock",   
+    "pause_break": "pause", "vol_up": "volumeup",
+    "vol_down": "volumedown", "vol_mute": "volumemute",
+    "hanja": "hanja",
 
-    # ±â´É Å°
-    "f1": 0x70,    "f2": 0x71,    "f3": 0x72,    "f4": 0x73,
-    "f5": 0x74,    "f6": 0x75,    "f7": 0x76,    "f8": 0x77,
-    "f9": 0x78,    "f10": 0x79,    "f11": 0x7A,    "f12": 0x7B,
+    # ê¸°ëŠ¥ í‚¤
+    "f1": "f1",    "f2": "f2",    "f3": "f3",    "f4": "f4",
+    "f5": "f5",    "f6": "f6",    "f7": "f7",    "f8": "f8",
+    "f9": "f9",    "f10": "f10",    "f11": "f11",    "f12": "f12",
 
-    # È­»ìÇ¥ Å°
-    "left_arrow": 0x25,    "right_arrow": 0x27,
-    "up_arrow": 0x26,    "down_arrow": 0x28,
+    # í™”ì‚´í‘œ í‚¤
+    "left_arrow": "left",    "right_arrow": "right",
+    "up_arrow": "up",    "down_arrow": "down",
 
-    # Å½»ö Å°
-    "insert": 0x2D,    "home": 0x24,    "page_up": 0x21,
-    "delete": 0x2E,    "end": 0x23,     "page_down": 0x22,
+    # íƒìƒ‰ í‚¤
+    "insert": "insert",    "home": "home",    "page_up": "pageup",
+    "delete": "delete",    "end": "end",     "page_down": "pgdn",
 
-    # ÀÔ·Â Å° (ÆíÁı)
-    "backspace": 0x08,  "enter": 0x0D,  "shift": 0x10,
-    "tab": 0x09,    "caps_lock": 0x14,  "spacebar": 0x20,
+    # ì…ë ¥ í‚¤ (í¸ì§‘)
+    "backspace": "backspace",  "enter": "enter",  "shift": "shift",
+    "tab": "tab",    "caps_lock": "capslock",  "spacebar": "space",
 
-    # ÀÔ·Â Å° (¼ıÀÚ)
-    "0": 0x30,    "1": 0x31,    "2": 0x32,    "3": 0x33,    "4": 0x34,
-    "5": 0x35,    "6": 0x36,    "7": 0x37,    "8": 0x38,    "9": 0x39,
+    # ì…ë ¥ í‚¤ (ìˆ«ì)
+    "0": "0",    "1": "1",    "2": "2",    "3": "3",    "4": "4",
+    "5": "5",    "6": "6",    "7": "7",    "8": "8",    "9": "9",
 
-    # ÀÔ·Â Å° (¾ËÆÄºª)
-    "a": 0x41,    "b": 0x42,    "c": 0x43,    "d": 0x44,    "e": 0x45,
-    "f": 0x46,    "g": 0x47,    "h": 0x48,    "i": 0x49,    "j": 0x4A,
-    "k": 0x4B,    "l": 0x4C,    "m": 0x4D,    "n": 0x4E,    "o": 0x4F,
-    "p": 0x50,    "q": 0x51,    "r": 0x52,    "s": 0x53,    "t": 0x54,
-    "u": 0x55,    "v": 0x56,    "w": 0x57,    "x": 0x58,    "y": 0x59,  "z": 0x5A,
+    # ì…ë ¥ í‚¤ (ì•ŒíŒŒë²³)
+    "a": "a",    "b": "b",    "c": "c",    "d": "d",    "e": "e",
+    "f": "f",    "g": "g",    "h": "h",    "i": "i",    "j": "j",
+    "k": "k",    "l": "l",    "m": "m",    "n": "n",    "o": "o",
+    "p": "p",    "q": "q",    "r": "r",    "s": "s",    "t": "t",
+    "u": "u",    "v": "v",    "w": "w",    "x": "x",    "y": "y",  "z": "z",
 
-    # ÀÔ·Â Å° (Æ¯¼ö¹®ÀÚ)
-    ";": 0xBA,    "=": 0xBB,    ",": 0xBC,    "-": 0xBD,    ".": 0xBE,
-    "/": 0xBF,    "`": 0xC0,    "[": 0xDB,    "\\": 0xDC,    "]": 0xDD,
-    "'": 0xDE,
+    # ì…ë ¥ í‚¤ (íŠ¹ìˆ˜ë¬¸ì)
+    ";": ";",    "=": "=",    ",": ",",    "-": "-",    ".": ".",
+    "/": "/",    "`": "`",    "[": "[",    "\\": "\\",    "]": "]",
+    "'": "'",
 
-    # ³ÑÆĞµå
-    "num_lock": 0x90, "numpad_/": 0x6F, "numpad_*": 0x6A,
-    "numpad_-": 0x6D, "numpad_+": 0x6B, "numpad_.": 0x6E,
-    "numpad_7": 0x67, "numpad_8": 0x68, "numpad_9": 0x69,
-    "numpad_4": 0x64, "numpad_5": 0x65, "numpad_6": 0x66,
-    "numpad_1": 0x61, "numpad_2": 0x62, "numpad_3": 0x63,
-    "numpad_0": 0x60,
+    # ë„˜íŒ¨ë“œ
+    "num_lock": "numlock", "numpad_/": "", "numpad_*": "multiply",
+    "numpad_-": "-", "numpad_+": "+", "numpad_.": ".",
+    "numpad_7": "num7", "numpad_8": "num8", "numpad_9": "num9",
+    "numpad_4": "num4", "numpad_5": "num5", "numpad_6": "num6",
+    "numpad_1": "num1", "numpad_2": "num2", "numpad_3": "num3",
+    "numpad_0": "num0",
 }
 
 
-# ´ë¹®ÀÚ Æ¯¼ö¹®ÀÚ¸¦ À§ÇÑ µñ¼Å³Ê¸®ÀÔ´Ï´Ù.
+# ëŒ€ë¬¸ì íŠ¹ìˆ˜ë¬¸ìë¥¼ ìœ„í•œ ë”•ì…”ë„ˆë¦¬ì…ë‹ˆë‹¤.
 UPPER_SPECIAL = {
     "!": 1,    "@": 2,    "#": 3,    "$": 4,    "%": 5,    "^": 6,
     "&": 7,    "*": 8,    "(": 9,    ")": 0,    "_": "-",   "~": '`',    "|": '\\',
@@ -67,228 +70,200 @@ UPPER_SPECIAL = {
 }
 
 
-# ¸¶¿ì½º¸¦ Æ¯Á¤À§Ä¡·Î ÀÌµ¿½ÃÅ°´Â ÇÔ¼ö
+# ë§ˆìš°ìŠ¤ë¥¼ íŠ¹ì •ìœ„ì¹˜ë¡œ ì´ë™ì‹œí‚¤ëŠ” í•¨ìˆ˜
 def move_mouse(location):
-    # location À» ÀÔ·Â¹Ş¾Æ ÀÌ À§Ä¡·Î ¸¶¿ì½º¸¦ ÀÌµ¿½ÃÅµ´Ï´Ù.
-    win32api.SetCursorPos(location)
+    # location ì„ ì…ë ¥ë°›ì•„ ì´ ìœ„ì¹˜ë¡œ ë§ˆìš°ìŠ¤ë¥¼ ì´ë™ì‹œí‚µë‹ˆë‹¤.
+    pyautogui.moveTo(location)
 
 
-# ¸¶¿ì½ºÀÇ ÇöÀç ÁÂÇ¥¸¦ ±¸ÇÏ´Â ÇÔ¼ö
+# ë§ˆìš°ìŠ¤ì˜ í˜„ì¬ ì¢Œí‘œë¥¼ êµ¬í•˜ëŠ” í•¨ìˆ˜
 def get_mouse_position():
-    # ¸¶¿ì½º Ä¿¼­ÀÇ ÇöÀç À§Ä¡¸¦ Ãâ·ÂÇÕ´Ï´Ù.
-    # ¸ÅÅ©·Î¸¦ Á¦ÀÛÇÏ´Â °úÁ¤¿¡¼­, ÄÜ¼Ö¿¡¼­ ºÒ·¯¿Í¼­ ¾²¸é À¯¿ëÇÕ´Ï´Ù.
-    return win32gui.GetCursorPos()
+    # ë§ˆìš°ìŠ¤ ì»¤ì„œì˜ í˜„ì¬ ìœ„ì¹˜ë¥¼ ì¶œë ¥í•©ë‹ˆë‹¤.
+    # ë§¤í¬ë¡œë¥¼ ì œì‘í•˜ëŠ” ê³¼ì •ì—ì„œ, ì½˜ì†”ì—ì„œ ë¶ˆëŸ¬ì™€ì„œ ì“°ë©´ ìœ ìš©í•©ë‹ˆë‹¤.
+    return tuple(pyautogui.position())
 
 
-# ÁöÁ¤µÈ À§Ä¡·Î ¸¶¿ì½º Ä¿¼­¸¦ ÀÌµ¿ÇÏ°í ¿ŞÂÊ ¹öÆ°À» Å¬¸¯ÇÏ´Â ÇÔ¼ö
+# ì§€ì •ëœ ìœ„ì¹˜ë¡œ ë§ˆìš°ìŠ¤ ì»¤ì„œë¥¼ ì´ë™í•˜ê³  ì™¼ìª½ ë²„íŠ¼ì„ í´ë¦­í•˜ëŠ” í•¨ìˆ˜
 def click(location):
-    # ¸¶¿ì½º¸¦ ÀÌµ¿½ÃÅµ´Ï´Ù.
-    move_mouse(location)
-    # ¿ŞÂÊ ¹öÆ°À» Å¬¸¯ÇÕ´Ï´Ù.
-    l_click()
+    # ë§ˆìš°ìŠ¤ë¥¼ í´ë¦­í•©ë‹ˆë‹¤..
+    pyautogui.click(location)
 
 
-# ÁöÁ¤µÈ À§Ä¡·Î ¸¶¿ì½º Ä¿¼­¸¦ ÀÌµ¿ÇÏ°í ¿À¸¥ÂÊ ¹öÆ°À» Å¬¸¯ÇÏ´Â ÇÔ¼ö
+# ì§€ì •ëœ ìœ„ì¹˜ë¡œ ë§ˆìš°ìŠ¤ ì»¤ì„œë¥¼ ì´ë™í•˜ê³  ì˜¤ë¥¸ìª½ ë²„íŠ¼ì„ í´ë¦­í•˜ëŠ” í•¨ìˆ˜
 def right_click(location):
-    # ¸¶¿ì½º¸¦ ÀÌµ¿½ÃÅµ´Ï´Ù.
-    move_mouse(location)
-    # ¿ŞÂÊ ¹öÆ°À» Å¬¸¯ÇÕ´Ï´Ù.
-    r_click()
+    pyautogui.click(location, button='right')
 
 
-# ´õºíÅ¬¸¯
+# ë”ë¸”í´ë¦­
 def double_click(location):
-    # ¸¶¿ì½º¸¦ ÀÌµ¿½ÃÅµ´Ï´Ù.
-    move_mouse(location)
-    # ¿ŞÂÊ ¹öÆ°À» Å¬¸¯ÇÏ´Â ÇÔ¼ö¸¦ µÎ ¹ø È£ÃâÇÕ´Ï´Ù.
-    l_click()
-    l_click()
+    pyautogui.click(location, button='left', clicks=2, interval=0.25)
 
 
-# Å°¸¦ ÇÑ ¹ø ´­·¶´Ù°¡ ¶¼´Â ÇÔ¼öÀÔ´Ï´Ù.
+# í‚¤ë¥¼ í•œ ë²ˆ ëˆŒë €ë‹¤ê°€ ë–¼ëŠ” í•¨ìˆ˜ì…ë‹ˆë‹¤.
 def key_press_once(key):
-    # Å°¸¦ ´©¸¨´Ï´Ù.
-    key_on(key)
-    # Å°¸¦ ¶Á´Ï´Ù.
-    key_off(key)
+    pyautogui.press(key)
 
 
-# ±ÛÀÚ ÀÔ·Â (Å¬¸³º¸µå¿¡ º¹»ç ÈÄ ºÙ¿©³Ö±â)
-# ÇÑ±ÛÀÏ °æ¿ì¿¡¸¸ »ç¿ëÇÏ¼¼¿ä. ÇÑ±ÛÀº ÇüÅÂ¼Ò ºĞÇØ°¡ °ï¶õÇÏ¿© ±×·¸½À´Ï´Ù.
+# ê¸€ì ì…ë ¥ (í´ë¦½ë³´ë“œì— ë³µì‚¬ í›„ ë¶™ì—¬ë„£ê¸°)
+# í•œê¸€ì¼ ê²½ìš°ì—ë§Œ ì‚¬ìš©í•˜ì„¸ìš”. í•œê¸€ì€ í˜•íƒœì†Œ ë¶„í•´ê°€ ê³¤ë€í•˜ì—¬ ê·¸ë ‡ìŠµë‹ˆë‹¤.
 def type_in(string):
-    # Å¬¸³º¸µå¿¡ ½ºÆ®¸µÀ» Áı¾î³Ö½À´Ï´Ù.
+    # í´ë¦½ë³´ë“œì— ìŠ¤íŠ¸ë§ì„ ì§‘ì–´ë„£ìŠµë‹ˆë‹¤.
     pyperclip.copy(string)
-    # Ctrl v·Î ºÙ¿©³Ö±â ÇÕ´Ï´Ù.
+    # Ctrl vë¡œ ë¶™ì—¬ë„£ê¸° í•©ë‹ˆë‹¤.
     ctrl_v()
 
 
-# ¿µ¾î, ¼ıÀÚ, Æ¯¼ö¹®ÀÚ·Î µÈ ½ºÆ®¸µÀ» ¹Ù·Î ÀÔ·ÂÇÏ´Â ÇÔ¼öÀÔ´Ï´Ù.
+# ì˜ì–´, ìˆ«ì, íŠ¹ìˆ˜ë¬¸ìë¡œ ëœ ìŠ¤íŠ¸ë§ì„ ë°”ë¡œ ì…ë ¥í•˜ëŠ” í•¨ìˆ˜ì…ë‹ˆë‹¤.
 def typing(string):
-    for el in string:
-        if el.isupper():
-            key_on("shift")
-            key_press_once(el.lower())
-            key_off("shift")
-        elif el in UPPER_SPECIAL:
-            key_on("shift")
-            key_press_once(UPPER_SPECIAL[el])
-            key_off("shift")
-        else:
-            key_press_once(el)
+    pyautogui.write(string)
 
 
-# Å°¸¦ °è¼Ó ´©¸£°í ÀÖµµ·Ï ÇÏ´Â ÇÔ¼öÀÔ´Ï´Ù.
+# í‚¤ë¥¼ ê³„ì† ëˆ„ë¥´ê³  ìˆë„ë¡ í•˜ëŠ” í•¨ìˆ˜ì…ë‹ˆë‹¤.
 def key_on(key):
-    # Àü¿ªº¯¼ö KEYMAP¿¡ Á¢±ÙÇÒ °ÍÀÓÀ» ¼±¾ğÇÕ´Ï´Ù.
+    # ì „ì—­ë³€ìˆ˜ KEYMAPì— ì ‘ê·¼í•  ê²ƒì„ì„ ì„ ì–¸í•©ë‹ˆë‹¤.
     global KEYMAP
-    # ÀÔ·Â¹ŞÀº °ªÀ» ¼Ò¹®ÀÚ·Î º¯È¯ÇÕ´Ï´Ù.
+    # ì…ë ¥ë°›ì€ ê°’ì„ ì†Œë¬¸ìë¡œ ë³€í™˜í•©ë‹ˆë‹¤.
     key = str(key)
     if key.isupper:
         key = key.lower()
     try:
-        # Å°¸Ê¿¡¼­ Å° ÄÚµå¸¦ »Ì¾Æ¿É´Ï´Ù.
+        # í‚¤ë§µì—ì„œ í‚¤ ì½”ë“œë¥¼ ë½‘ì•„ì˜µë‹ˆë‹¤.
         key_code = KEYMAP[key.lower()]
-        win32api.keybd_event(key_code, 0, 0x00, 0)
+        pyautogui.keyDown(key_code)
     except KeyError:
-        # Å°¸Ê¿¡ ¼¼ÆÃµÇÁö ¾ÊÀº Å°¸¦ ¿äÃ»Çß½À´Ï´Ù. ¿¡·¯¸Ş½ÃÁö¸¦ Ãâ·ÂÇÕ´Ï´Ù.
+        # í‚¤ë§µì— ì„¸íŒ…ë˜ì§€ ì•Šì€ í‚¤ë¥¼ ìš”ì²­í–ˆìŠµë‹ˆë‹¤. ì—ëŸ¬ë©”ì‹œì§€ë¥¼ ì¶œë ¥í•©ë‹ˆë‹¤.
         print(key + " is not an available key input.")
-        # ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù.
+        # í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤.
         exit(1)
 
 
-# ´­·¶´ø Å°¸¦ ¶¼°Ô ÇÏ´Â ÇÔ¼öÀÔ´Ï´Ù.
+# ëˆŒë €ë˜ í‚¤ë¥¼ ë–¼ê²Œ í•˜ëŠ” í•¨ìˆ˜ì…ë‹ˆë‹¤.
 def key_off(key):
-    # Àü¿ªº¯¼ö KEYMAP¿¡ Á¢±ÙÇÒ °ÍÀÓÀ» ¼±¾ğÇÕ´Ï´Ù.
+    # ì „ì—­ë³€ìˆ˜ KEYMAPì— ì ‘ê·¼í•  ê²ƒì„ì„ ì„ ì–¸í•©ë‹ˆë‹¤.
     global KEYMAP
-    # ÀÔ·Â¹ŞÀº °ªÀ» ¼Ò¹®ÀÚ·Î º¯È¯ÇÕ´Ï´Ù.
+    # ì…ë ¥ë°›ì€ ê°’ì„ ì†Œë¬¸ìë¡œ ë³€í™˜í•©ë‹ˆë‹¤.
     key = str(key)
     if key.isupper:
         key = key.lower()
     try:
-        # Å°¸Ê¿¡¼­ Å° ÄÚµå¸¦ »Ì¾Æ¿É´Ï´Ù.
+        # í‚¤ë§µì—ì„œ í‚¤ ì½”ë“œë¥¼ ë½‘ì•„ì˜µë‹ˆë‹¤.
         key_code = KEYMAP[key.lower()]
-        win32api.keybd_event(key_code, 0, 0x02, 0)
+        pyautogui.keyUp(key_code)
     except KeyError:
-        # Å°¸Ê¿¡ ¼¼ÆÃµÇÁö ¾ÊÀº Å°¸¦ ¿äÃ»Çß½À´Ï´Ù. ¿¡·¯¸Ş½ÃÁö¸¦ Ãâ·ÂÇÕ´Ï´Ù.
+        # í‚¤ë§µì— ì„¸íŒ…ë˜ì§€ ì•Šì€ í‚¤ë¥¼ ìš”ì²­í–ˆìŠµë‹ˆë‹¤. ì—ëŸ¬ë©”ì‹œì§€ë¥¼ ì¶œë ¥í•©ë‹ˆë‹¤.
         print(key + " is not an available key input.")
-        # ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù.
+        # í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤.
         exit(1)
 
 
-# ¸¶¿ì½º¸¦ ÇöÀç ÀÚ¸®¿¡¼­ ¿ŞÂÊ ¹öÆ°À» Å¬¸¯ÇÏ´Â ÇÔ¼ö
+# ë§ˆìš°ìŠ¤ë¥¼ í˜„ì¬ ìë¦¬ì—ì„œ ì™¼ìª½ ë²„íŠ¼ì„ í´ë¦­í•˜ëŠ” í•¨ìˆ˜
 def l_click():
-    # ¸¶¿ì½º ¿ŞÂÊ ¹öÆ°À» ´©¸¨´Ï´Ù.
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
-    # ¸¶¿ì½º ¿ŞÂÊ ¹öÆ°À» ¶Á´Ï´Ù.
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
+    pyautogui.click()
 
 
-# ¸¶¿ì½º¸¦ ÇöÀç ÀÚ¸®¿¡¼­ ¿À¸¥ÂÊ ¹öÆ°À» Å¬¸¯ÇÏ´Â ÇÔ¼ö
+# ë§ˆìš°ìŠ¤ë¥¼ í˜„ì¬ ìë¦¬ì—ì„œ ì˜¤ë¥¸ìª½ ë²„íŠ¼ì„ í´ë¦­í•˜ëŠ” í•¨ìˆ˜
 def r_click():
-    # ¸¶¿ì½º ¿À¸¥ÂÊ ¹öÆ°À» ´©¸¨´Ï´Ù.
-    win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0)
-    # ¸¶¿ì½º ¿À¸¥ÂÊ ¹öÆ°À» ¶Á´Ï´Ù.
-    win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0)
+    pyautogui.click(button='right')
 
 
-# ¸¶¿ì½º ½ºÅ©·ÑÀ» ¿Ã¸®´Â ÇÔ¼ö
+# ë§ˆìš°ìŠ¤ ìŠ¤í¬ë¡¤ì„ ì˜¬ë¦¬ëŠ” í•¨ìˆ˜
 def mouse_upscroll(number=1000):
     x, y = get_mouse_position()
-    # ¸î Ä­ÀÌ³ª ¿Ã¸±Áö number¿¡ ÀÔ·Â¹Ş½À´Ï´Ù.
-    win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL, x, y, number, 0)
+    # ëª‡ ì¹¸ì´ë‚˜ ì˜¬ë¦´ì§€ numberì— ì…ë ¥ë°›ìŠµë‹ˆë‹¤.
+    pyautogui.scroll(number, x=x, y=y)
 
-# ¸¶¿ì½º ½ºÅ©·ÑÀ» ³»¸®´Â ÇÔ¼ö
+# ë§ˆìš°ìŠ¤ ìŠ¤í¬ë¡¤ì„ ë‚´ë¦¬ëŠ” í•¨ìˆ˜
 def mouse_downscroll(number=1000):
     x, y = get_mouse_position()
-    # ¸î Ä­ÀÌ³ª ³»¸±Áö number¿¡ ÀÔ·Â¹Ş½À´Ï´Ù. ±âº»Àº ÇÑ Ä­ ³»¸³´Ï´Ù.
-    win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL, x, y, -1*number, 0)
+    # ëª‡ ì¹¸ì´ë‚˜ ì˜¬ë¦´ì§€ numberì— ì…ë ¥ë°›ìŠµë‹ˆë‹¤.
+    pyautogui.scroll(-1 * number, x=x, y=y)
 
 
-# µå·¡±×µå·Ó ÇÔ¼ö
+# ë“œë˜ê·¸ë“œë¡­ í•¨ìˆ˜
 def drag_drop(frm, to):
-    # ÁÂÇ¥°ªÀ» ÀÔ·Â¹Ş½À´Ï´Ù.
-    x1, y1 = frm
-    x2, y2 = to
-    # Å¬¸¯ ½ÃÀÛÁöÁ¡À¸·Î Ä¿¼­¸¦ ¿Å±é´Ï´Ù.
+    # ì¢Œí‘œê°’ì„ ì…ë ¥ë°›ìŠµë‹ˆë‹¤.
+    x, y = to
+    # í´ë¦­ ì‹œì‘ì§€ì ìœ¼ë¡œ ì»¤ì„œë¥¼ ì˜®ê¹ë‹ˆë‹¤.
     move_mouse(frm)
-    # ¿ŞÂÊ ¹öÆ°À» Å¬¸¯ÇÕ´Ï´Ù.
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
-    # Å¬¸¯À» À¯ÁöÇÑ Ã¤·Î ¸¶¿ì½º À§Ä¡¸¦ ÀÌµ¿½ÃÅµ´Ï´Ù.
-    win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, x2-x1, y2-y1, 0, 0)
-    # ¸¶¿ì½º ¹öÆ°À» ¶Á´Ï´Ù.
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
+    # ë“œë˜ê·¸ë¥¼ ìˆ˜í–‰í•©ë‹ˆë‹¤
+    pyautogui.dragTo(x, y, 0.5, button='left')
 
 
-# Æ¯Á¤ ÁÂÇ¥ÀÇ »ö»óÀ» 16Áø¼ö·Î ÀĞ¾î ¿À´Â ÇÔ¼öÀÔ´Ï´Ù.
+# íŠ¹ì • ì¢Œí‘œì˜ ìƒ‰ìƒì„ 16ì§„ìˆ˜ë¡œ ì½ì–´ ì˜¤ëŠ” í•¨ìˆ˜ì…ë‹ˆë‹¤.
 def get_color(location):
-    # ÁÂÇ¥¸¦ ±¸ÇÕ´Ï´Ù.
+    # ì¢Œí‘œë¥¼ êµ¬í•©ë‹ˆë‹¤.
     x, y = location
-    # win32gui¸ğµâ·Î »ö»ó°ªÀ» µû ¿À°í, 16Áø¼ö·Î º¯È¯ÇÏ¿© ¸®ÅÏÇÕ´Ï´Ù.
-    return hex(win32gui.GetPixel(win32gui.GetDC(win32gui.GetActiveWindow()), x, y))
+    # RGB í”½ì…€ê°’ì„ êµ¬í•©ë‹ˆë‹¤.
+    try:
+        pixel = pyautogui.pixel(x, y)
+    except OSError:
+        print("OS Error ë°œìƒ. ë‹¤ì‹œ ì‹œë„í•©ë‹ˆë‹¤.")
+        return get_color(location)
+    return '0x%02x%02x%02x' % pixel
 
 
-# Ctrl C (º¹»ç)
+# Ctrl C (ë³µì‚¬)
 def ctrl_c():
-    # CtrlÀ» ´©¸¨´Ï´Ù.
+    # Ctrlì„ ëˆ„ë¦…ë‹ˆë‹¤.
     key_on("control")
-    # cµµ ´©¸¨´Ï´Ù.
+    # cë„ ëˆ„ë¦…ë‹ˆë‹¤.
     key_on("c")
-    # µÎ Å°¸¦ ¸ğµÎ ¶Á´Ï´Ù.
+    # ë‘ í‚¤ë¥¼ ëª¨ë‘ ë—ë‹ˆë‹¤.
     key_off("control")
     key_off("c")
 
 
-# Ctrl V (ºÙ¿©³Ö±â)
+# Ctrl V (ë¶™ì—¬ë„£ê¸°)
 def ctrl_v():
-    # CtrlÀ» ´©¸¨´Ï´Ù.
+    # Ctrlì„ ëˆ„ë¦…ë‹ˆë‹¤.
     key_on("control")
-    # vµµ ´©¸¨´Ï´Ù.
+    # vë„ ëˆ„ë¦…ë‹ˆë‹¤.
     key_on("v")
-    # µÎ Å°¸¦ ¸ğµÎ ¶Á´Ï´Ù.
+    # ë‘ í‚¤ë¥¼ ëª¨ë‘ ë—ë‹ˆë‹¤.
     key_off("control")
     key_off("v")
 
 
-# Ctrl A (¸ğµÎ ¼±ÅÃ)
+# Ctrl A (ëª¨ë‘ ì„ íƒ)
 def ctrl_a():
-    # CtrlÀ» ´©¸¨´Ï´Ù.
+    # Ctrlì„ ëˆ„ë¦…ë‹ˆë‹¤.
     key_on("control")
-    # aµµ ´©¸¨´Ï´Ù.
+    # aë„ ëˆ„ë¦…ë‹ˆë‹¤.
     key_on("a")
-    # µÎ Å°¸¦ ¸ğµÎ ¶Á´Ï´Ù.
+    # ë‘ í‚¤ë¥¼ ëª¨ë‘ ë—ë‹ˆë‹¤.
     key_off("control")
     key_off("a")
 
 
-# Ctrl F (Ã£±â)
+# Ctrl F (ì°¾ê¸°)
 def ctrl_f():
-    # CtrlÀ» ´©¸¨´Ï´Ù.
+    # Ctrlì„ ëˆ„ë¦…ë‹ˆë‹¤.
     key_on("control")
-    # aµµ ´©¸¨´Ï´Ù.
+    # aë„ ëˆ„ë¦…ë‹ˆë‹¤.
     key_on("f")
-    # µÎ Å°¸¦ ¸ğµÎ ¶Á´Ï´Ù.
+    # ë‘ í‚¤ë¥¼ ëª¨ë‘ ë—ë‹ˆë‹¤.
     key_off("control")
     key_off("f")
 
 
-# Alt F4 (Á¾·á)
+# Alt F4 (ì¢…ë£Œ)
 def alt_f4():
-    # Alt¸¦ ´©¸¨´Ï´Ù.
+    # Altë¥¼ ëˆ„ë¦…ë‹ˆë‹¤.
     key_on("alt")
-    # F4µµ ´©¸¨´Ï´Ù.
+    # F4ë„ ëˆ„ë¦…ë‹ˆë‹¤.
     key_on("f4")
-    # µÎ Å°¸¦ ¸ğµÎ ¶Á´Ï´Ù.
+    # ë‘ í‚¤ë¥¼ ëª¨ë‘ ë—ë‹ˆë‹¤.
     key_off("alt")
     key_off("f4")
 
 
-# Alt Tab (È­¸é ÀüÈ¯)
+# Alt Tab (í™”ë©´ ì „í™˜)
 def alt_tab():
-    # Alt¸¦ ´©¸¨´Ï´Ù.
+    # Altë¥¼ ëˆ„ë¦…ë‹ˆë‹¤.
     key_on("alt")
-    # F4µµ ´©¸¨´Ï´Ù.
+    # F4ë„ ëˆ„ë¦…ë‹ˆë‹¤.
     key_on("tab")
-    # µÎ Å°¸¦ ¸ğµÎ ¶Á´Ï´Ù.
+    # ë‘ í‚¤ë¥¼ ëª¨ë‘ ë—ë‹ˆë‹¤.
     key_off("alt")
     key_off("tab")
 
