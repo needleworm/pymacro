@@ -16,7 +16,7 @@
 ## 1. 안내사항
 #### (1) 사용에 앞서 아래 라이브러리들을 설치해 주세요.
 
-> pip install pyautogui pillow
+> pip install pyautogui pillow pyperclip
 
 
 #### (2) 코드에 대한 자세한 설명이 코드에 삽입되어 있습니다.
