@@ -270,8 +270,8 @@ def alt_tab():
 
 # 이미지를 입력받아 화면에서 위치를 탐색합니다.
 # 화면에서 이미지가 발견되지 않을 경우 False를 리턴합니다.
-def find_on_screen(filename):
-    a = pyautogui.locateCenterOnScreen(filename)
+def find_on_screen(filename, confidence=0.7):
+    a = pyautogui.locateCenterOnScreen(filename, confidence=confidence)
     if not a:
         return False
     else:
