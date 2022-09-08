@@ -4,9 +4,22 @@ Author : Byunghyun Ban
 Book : 6개월 치 업무를 하루 만에 끝내는 업무 자동화
 """
 
-
-import pyperclip
-import pyautogui
+try:
+    import pyperclip
+    import pyautogui
+except ModuleNotFoundError:
+    import pip
+    pip.main(['install', 'pyautogui'])
+    pip.main(['install', 'pillow'])
+    pip.main(['install', 'pyperclip'])
+    try:
+        import pyperclip
+        import pyautogui
+    except ModuleNotFoundError:
+        time.sleep(2)
+        import pyperclip
+        import pyautogui
+        
 
 # 라이브러리에서 사용할 키맵을 미리 세팅합니다.
 KEYMAP = {
