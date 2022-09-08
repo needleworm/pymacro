@@ -12,6 +12,7 @@ except ModuleNotFoundError:
     pip.main(['install', 'pyautogui'])
     pip.main(['install', 'pillow'])
     pip.main(['install', 'pyperclip'])
+    pip.main(['install', 'opencv-python'])
     try:
         import pyperclip
         import pyautogui
@@ -114,8 +115,8 @@ def double_click(location):
 
 # 키를 한 번 눌렀다가 떼는 함수입니다.
 def key_press_once(key):
-    pyautogui.press(key)
-
+    key_on(key)
+    key_off(key)
 
 # 글자 입력 (클립보드에 복사 후 붙여넣기)
 # 한글일 경우에만 사용하세요. 한글은 형태소 분해가 곤란하여 그렇습니다.
