@@ -3,6 +3,8 @@
 Author : Byunghyun Ban
 Book : 6개월 치 업무를 하루 만에 끝내는 업무 자동화
 """
+import time
+
 
 try:
     import pyperclip
