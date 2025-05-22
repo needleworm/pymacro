@@ -129,6 +129,11 @@ def type_in(string):
     ctrl_v()
 
 
+# 클립보드의 데이터 변수로 저장
+def from_clopboard():
+    return pyperclip.paste()
+
+
 # 영어, 숫자, 특수문자로 된 스트링을 바로 입력하는 함수입니다.
 def typing(string):
     pyautogui.write(string)
