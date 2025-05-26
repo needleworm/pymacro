@@ -130,7 +130,7 @@ def type_in(string):
 
 
 # 클립보드의 데이터 변수로 저장
-def from_clopboard():
+def from_clipboard():
     return pyperclip.paste()
 
 
